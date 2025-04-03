@@ -52,9 +52,21 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('registration_app.urls')),
+
+    # Swagger and ReDoc
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    # ✅ Add this line at the end
-    path('', lambda request: HttpResponse("<h2>✅ Welcome to Best Home API</h2><p>Go to <a href='/swagger/'>Swagger UI</a></p>")),
+    # ✅ Home page with API list
+    path('', lambda request: HttpResponse("""
+        <h1>🔗 API Endpoints</h1>
+        <ul>
+            <li><a href="/swagger/">Swagger Docs</a></li>
+            <li><a href="/redoc/">ReDoc Docs</a></li>
+            <li><a href="/api/register/">Register API</a></li>
+            <li><a href="/api/property-info/">Property Info API</a></li>
+            <li><a href="/admin/">Admin Panel</a></li>
+        </ul>
+    """, content_type="text/html")),
 ]
+
