@@ -5,3 +5,4 @@ django-cors-headers>=4.3.1
 psycopg2-binary>=2.9.9  # Required if you use PostgreSQL
 pytz
 sqlparse
+gunicorn>=21.2.0
