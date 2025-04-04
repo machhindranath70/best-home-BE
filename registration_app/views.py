@@ -25,3 +25,14 @@ class PropertyInfoListAPI(APIView):
         data = PropertyInfo.objects.all()
         serializer = PropertyInfoSerializer(data, many=True)
         return Response(serializer.data)
+
+
+class PropertyInfoByCityAPI(APIView):
+    def get(self, request):
+        city = request.GET.get('city')
+        if not city:
+            return Response({'error': 'City parameter is required.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        properties = PropertyInfo.objects.filter(city__iexact=city)
+        serializer = PropertyInfoSerializer(properties, many=True)
+        return Response(serializer.data)
