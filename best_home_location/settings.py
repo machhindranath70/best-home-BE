@@ -174,3 +174,5 @@ LOGIN_URL = '/admin/login/'
 CORS_ALLOW_ALL_ORIGINS = True
 
 DEBUG = True
+
+ALLOWED_HOSTS = ['best-home-be-2.onrender.com']
