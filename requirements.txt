@@ -4,7 +4,7 @@ Django==5.2
 django-cors-headers==4.7.0
 djangorestframework==3.16.0
 drf-yasg==1.21.10
-GDAL==3.10.2
+gdal==3.6.2
 gunicorn==23.0.0
 inflection==0.5.1
 # numpy @ file:///D:/bld/numpy_1742254798705/work/dist/numpy-2.2.4-cp311-cp311-win_amd64.whl#sha256=74ccabf85c3fb995918f6fdfe798dadfb1e0e8680676dfbcd75da8078c12bad5
