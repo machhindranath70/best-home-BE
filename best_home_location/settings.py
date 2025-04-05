@@ -16,11 +16,11 @@ from dotenv import load_dotenv
 import dj_database_url
 
 
-import os
-# Add at the top or near DATABASES
-GDAL_LIBRARY_PATH = os.path.join(
-    os.environ.get("CONDA_PREFIX", ""), "Library", "bin", "gdal.dll"  # or the actual version you have
-)
+# import os
+# # Add at the top or near DATABASES
+# GDAL_LIBRARY_PATH = os.path.join(
+#     os.environ.get("CONDA_PREFIX", ""), "Library", "bin", "gdal.dll"  # or the actual version you have
+# )
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
