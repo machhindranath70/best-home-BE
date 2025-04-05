@@ -7,6 +7,10 @@ from rest_framework import status
 from .serializers import RegistrationSerializer
 from .models import PropertyInfo
 from .serializers import PropertyInfoSerializer
+from rest_framework.decorators import api_view
+from django.contrib.gis.geos import Point
+from django.contrib.gis.db.models.functions import Distance
+
 
 class RegistrationAPIView(APIView):
     def post(self, request):
@@ -36,3 +40,23 @@ class PropertyInfoByCityAPI(APIView):
         properties = PropertyInfo.objects.filter(city__iexact=city)
         serializer = PropertyInfoSerializer(properties, many=True)
         return Response(serializer.data)
+
+@api_view(['GET'])
+def nearby_properties_api(request):
+    try:
+        lat = float(request.GET.get('lat'))
+        lon = float(request.GET.get('lon'))
+        radius = float(request.GET.get('radius', 5000))  # Default 5000 meters
+    except (TypeError, ValueError):
+        return Response({"error": "Please provide valid lat, lon, and radius"}, status=400)
+
+    user_location = Point(lon, lat, srid=4326)
+
+    properties = PropertyInfo.objects.annotate(
+        distance=Distance('location', user_location)
+    ).filter(
+        distance__lte=radius
+    ).order_by('distance')
+
+    serializer = PropertyInfoSerializer(properties, many=True)
+    return Response(serializer.data)

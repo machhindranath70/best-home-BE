@@ -10,7 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+import dj_database_url
+
+
+import os
+# Add at the top or near DATABASES
+GDAL_LIBRARY_PATH = os.path.join(
+    os.environ.get("CONDA_PREFIX", ""), "Library", "bin", "gdal.dll"  # or the actual version you have
+)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +52,7 @@ INSTALLED_APPS = [
     'registration_app',
     'drf_yasg',
     'corsheaders',
+    'django.contrib.gis',
 ]
 
 MIDDLEWARE = [
@@ -80,12 +92,36 @@ WSGI_APPLICATION = 'best_home_location.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
+
+load_dotenv()  # ✅ loads your .env file
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
+
+ # make sure it's in your requirements.txt
+
+
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.getenv("DATABASE_URL"),
+#         conn_max_age=600,
+#         engine="django.contrib.gis.db.backends.postgis"
+#     )
+# }
+
+# ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
+
+# DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 
 # Password validation
@@ -136,3 +172,5 @@ LOGIN_URL = '/admin/login/'
 
 # For development only
 CORS_ALLOW_ALL_ORIGINS = True
+
+DEBUG = True

@@ -1,0 +1,1 @@
+-e "venv/\n__pycache__/\n*.pyc\n*.sqlite3\n.env\n.DS_Store\n*.log\n*.pot\n*.py[cod]\n*.swp\n.Python\ndb.sqlite3\n/static/\n/media/\n*.pyo\n.idea/\n*.egg-info\nGDAL/" 
