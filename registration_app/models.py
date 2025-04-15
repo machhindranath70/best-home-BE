@@ -9,6 +9,7 @@ class PropertyInfo(models.Model):
     category = models.CharField(max_length=100, blank=True)
     type = models.CharField(max_length=100, blank=True)
     phone = models.CharField(max_length=20, blank=True)
+    password = models.CharField(max_length=50, blank=True, null=True)
     full_address = models.TextField(blank=True)
     city = models.CharField(max_length=100, blank=True)
 

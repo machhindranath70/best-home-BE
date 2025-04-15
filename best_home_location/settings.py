@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -175,4 +176,11 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['best-home-be-2.onrender.com']
+# ALLOWED_HOSTS = ['best-home-be-2.onrender.com']
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+CORS_ALLOW_ALL_ORIGINS = True  # ✅ for local testing only
