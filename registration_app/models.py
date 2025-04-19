@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class PropertyInfo(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='property',null=True, blank=True)  # or ForeignKey if you want many properties
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, blank=True)
     site = models.CharField(max_length=255, blank=True)
     subtypes = models.CharField(max_length=255, blank=True)
