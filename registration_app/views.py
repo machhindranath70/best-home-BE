@@ -146,10 +146,7 @@ class UserAndPropertyRegisterAPI(APIView):
 
         serializer = PropertyInfoSerializer(data=data)
         if serializer.is_valid():
-            property_instance = serializer.save()
-            property_instance.phone = username   # Make sure phone field is filled
-            property_instance.user = user        # ✅ Link the user to the property
-            property_instance.save()
+            serializer.save()
             return Response({
                 "message": "User and Property registered successfully.",
                 "user": {
