@@ -126,7 +126,10 @@ class UserAndPropertyRegisterAPI(APIView):
         data = request.data.copy()
 
         # Step 1: Create User
-        username = data.get('username')
+        # username = data.get('username')
+        raw_username = data.get('username', '')
+        cleaned_phone = raw_username.replace(" ", "").replace("+91", "").strip()
+        username = cleaned_phone
         email = data.get('email', '')
         password = data.get('password')
 
@@ -136,7 +139,9 @@ class UserAndPropertyRegisterAPI(APIView):
         if User.objects.filter(username=username).exists():
             return Response({"error": "Username already taken."}, status=400)
 
+        # user = User.objects.create_user(username=username, email=email, password=password)
         user = User.objects.create_user(username=username, email=email, password=password)
+        data['phone'] = username  # Ensure phone matches login username
 
         # Step 2: Link Property to User
         data['owner'] = user.id
@@ -146,7 +151,10 @@ class UserAndPropertyRegisterAPI(APIView):
 
         serializer = PropertyInfoSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            property_instance = serializer.save()
+            property_instance.user = user  # 💥 Now this works!
+            property_instance.save()
+            # serializer.save()
             return Response({
                 "message": "User and Property registered successfully.",
                 "user": {
