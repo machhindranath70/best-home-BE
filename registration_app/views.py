@@ -211,6 +211,7 @@ def nearby_properties_api(request):
 
 class AddOrUpdatePropertyService(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [JSONParser]
 
     def get(self, request):
         try:
