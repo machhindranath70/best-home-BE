@@ -45,5 +45,23 @@ class Registration(models.Model):
     def __str__(self):
         return f"{self.name} - {self.property_name}"
 
+class PropertyService(models.Model):
+    property = models.OneToOneField(PropertyInfo, on_delete=models.CASCADE, related_name="services")  # FK to PropertyInfo
+
+    # Sharing prices
+    one_sharing_price = models.PositiveIntegerField()
+    two_sharing_price = models.PositiveIntegerField()
+    three_sharing_price = models.PositiveIntegerField()
+    four_sharing_price = models.PositiveIntegerField()
+
+    # Amenities
+    is_ac = models.BooleanField(default=False)
+    is_hot_water = models.BooleanField(default=False)
+    is_wifi = models.BooleanField(default=False)
+    is_washing_machine = models.BooleanField(default=False)
+    room_cleaning_schedule = models.CharField(max_length=100, default="Every day")  # Text like "Every day"
+
+    def __str__(self):
+        return f"Services for {self.property.name}"
 
 

@@ -15,6 +15,7 @@ from rest_framework_simplejwt.views import (
 )
 from .views import MyPropertyView
 from .views import UpdateMyPropertyView
+from .views import AddOrUpdatePropertyService
 
 urlpatterns = [
     path('register/', RegistrationAPIView.as_view(), name='register'),
@@ -27,6 +28,7 @@ urlpatterns = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # 🔄 Refresh token
     path('my-profile/', MyPropertyView.as_view(), name='my-profile'),
     path('update-property/', UpdateMyPropertyView.as_view(), name='update-property'),
+    path('property-service/', AddOrUpdatePropertyService.as_view(), name='property-service'),
 
 ]
 

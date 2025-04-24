@@ -23,6 +23,10 @@ from rest_framework.permissions import IsAuthenticated
 
 import base64
 
+from .models import PropertyService
+from .serializers import PropertyServiceSerializer
+from rest_framework.permissions import IsAuthenticated
+
 def encode_image_to_base64(image_file):
     if not image_file:
         return None
@@ -204,3 +208,35 @@ def nearby_properties_api(request):
 
     serializer = PropertyInfoSerializer(properties, many=True)
     return Response(serializer.data)
+
+class AddOrUpdatePropertyService(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            property = PropertyInfo.objects.get(phone=request.user.username)
+            service = PropertyService.objects.get(property=property)
+            serializer = PropertyServiceSerializer(service)
+            return Response(serializer.data)
+        except PropertyInfo.DoesNotExist:
+            return Response({"error": "Property not found for user"}, status=404)
+        except PropertyService.DoesNotExist:
+            return Response({"message": "No service info added yet."}, status=204)
+
+    def post(self, request):
+        try:
+            property = PropertyInfo.objects.get(phone=request.user.username)
+        except PropertyInfo.DoesNotExist:
+            return Response({"error": "No property found for this user"}, status=404)
+
+        # Check if service already exists
+        try:
+            service = PropertyService.objects.get(property=property)
+            serializer = PropertyServiceSerializer(service, data=request.data, partial=True)
+        except PropertyService.DoesNotExist:
+            serializer = PropertyServiceSerializer(data={**request.data, "property": property.id})
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Service info saved", "data": serializer.data})
+        return Response(serializer.errors, status=400)
